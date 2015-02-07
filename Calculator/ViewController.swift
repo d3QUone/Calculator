@@ -53,7 +53,7 @@ class ViewController: UIViewController {
             enter()
         }
         if let operation  = sender.currentTitle {
-            if let result = brain.performOperation(operation){
+            if let result = brain.performOperation(operation) {
                 displayValue = result
             } else {
                 displayValue = 0
@@ -68,7 +68,7 @@ class ViewController: UIViewController {
         if let result = brain.pushOperand(displayValue){
             displayValue = result
         } else {
-            // tell that something wrong 
+            // tell that something wrong
             displayValue = 0
         }
     }
@@ -88,6 +88,7 @@ class ViewController: UIViewController {
         else if countElements(buf) == 1 {
             display.text = "0"
             isDisplayUsing = false
+            dotWasTypedIn = false
         }
     }
     

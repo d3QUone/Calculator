@@ -45,10 +45,6 @@ class CalculatorBrain {
         learnOp(Op.UnaryOperation("cos", cos))
         learnOp(Op.UnaryOperation("tan", tan))
         learnOp(Op.UnaryOperation("+/−") { -1*$0 })
-        
-        
-        //knownOps["×"] = Op.BinaryOperation("×", *)
-        //knownOps["÷"] = Op.BinaryOperation("÷") { $1 / $0 }
     }
     
     private func evaulate(ops: [Op]) -> (result: Double?, remainingOps: [Op]) {
@@ -56,20 +52,19 @@ class CalculatorBrain {
             var remainingOps = ops
             let op = remainingOps.removeLast()
             switch op {
-            case .Operand(let operand):
-                return (operand, remainingOps)
-            case .UnaryOperation(_, let operation):
-                let operandEvaulate = evaulate(remainingOps)
-                if let operand = operandEvaulate.result {
-                    return (operation(operand), operandEvaulate.remainingOps)
-                }
-            case .BinaryOperation(_, let operation):
-                let op1Eval = evaulate(remainingOps)
-                if let op1result = op1Eval.result {
-                    let op2Eval = evaulate(op1Eval.remainingOps)
-                    if let op2result = op2Eval.result {
-                        return (operation(op1result, op2result), op2Eval.remainingOps)
+                case .Operand(let operand): return (operand, remainingOps)
+                case .UnaryOperation(_, let operation):
+                    let operandEvaulate = evaulate(remainingOps)
+                    if let operand = operandEvaulate.result {
+                        return (operation(operand), operandEvaulate.remainingOps)
                     }
+                case .BinaryOperation(_, let operation):
+                    let op1Eval = evaulate(remainingOps)
+                    if let op1result = op1Eval.result {
+                        let op2Eval = evaulate(op1Eval.remainingOps)
+                        if let op2result = op2Eval.result {
+                            return (operation(op1result, op2result), op2Eval.remainingOps)
+                        }
                 }
             }
         }
@@ -78,7 +73,6 @@ class CalculatorBrain {
     
     func evaulate() -> Double? {
         let (result, remainder) = evaulate(opStack)
-        //println("\(opStack) = \(result!) with \(remainder) left over")
         return result
     }
     
