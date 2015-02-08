@@ -10,27 +10,25 @@ import Foundation
 
 
 class CalculatorBrain {
-    
     private enum Op: Printable {
         case Operand(Double)
         case UnaryOperation(String, Double -> Double)
         case BinaryOperation(String, (Double, Double) -> Double)
-        
+        //case Constant(String, Double) // save M_PI here
         var description: String {
             get {
                 switch self {
                 case .Operand(let operand): return "\(operand)"
                 case .UnaryOperation(let symbol, _): return symbol
                 case .BinaryOperation(let symbol, _): return symbol
+                //case .Constant(let symbol, _): return symbol
                 }
             }
         }
     }
     
     private var opStack = [Op]()
-    
     private var knownOps = [String: Op]()
-    
     init(){
         func learnOp(op: Op){
             knownOps[op.description] = op
@@ -53,11 +51,13 @@ class CalculatorBrain {
             let op = remainingOps.removeLast()
             switch op {
                 case .Operand(let operand): return (operand, remainingOps)
+                
                 case .UnaryOperation(_, let operation):
                     let operandEvaulate = evaulate(remainingOps)
                     if let operand = operandEvaulate.result {
                         return (operation(operand), operandEvaulate.remainingOps)
                     }
+                
                 case .BinaryOperation(_, let operation):
                     let op1Eval = evaulate(remainingOps)
                     if let op1result = op1Eval.result {

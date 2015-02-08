@@ -12,7 +12,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     var isDisplayUsing = false
     var dotWasTypedIn = false
-    
     var brain = CalculatorBrain()
     
     @IBAction func digit(sender: UIButton) {
@@ -46,6 +45,8 @@ class ViewController: UIViewController {
                 println("you can't start from dot")
             }
         }
+        // hot fix
+        //displayValue = convertTextToDouble(display.text!)
     }
     
     @IBAction func operation(sender: UIButton) {
@@ -56,7 +57,8 @@ class ViewController: UIViewController {
             if let result = brain.performOperation(operation) {
                 displayValue = result
             } else {
-                displayValue = 0
+                // tell that something wrong
+                displayValue = 0.0
             }
         }
     }
@@ -64,12 +66,11 @@ class ViewController: UIViewController {
     @IBAction func enter() {
         isDisplayUsing = false
         dotWasTypedIn = false
-        println("current displayValue: \(displayValue)")
         if let result = brain.pushOperand(displayValue){
             displayValue = result
         } else {
             // tell that something wrong
-            displayValue = 0
+            displayValue = 0.0
         }
     }
     
@@ -99,6 +100,10 @@ class ViewController: UIViewController {
         set {
             display.text = "\(newValue)"
         }
+    }
+    
+    func convertTextToDouble(text: String) -> Double {
+        return NSNumberFormatter().numberFromString(text)!.doubleValue
     }
 }
 
