@@ -78,6 +78,7 @@ class CalculatorBrain {
     
     func pushOperand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
+        println("pushed operand \(operand)")
         return evaulate()
     }
     
@@ -85,6 +86,7 @@ class CalculatorBrain {
         if let operation = knownOps[symbol]{
             opStack.append(operation)
         }
+        println("pushed operation \(symbol)")
         return evaulate()
     }
     
